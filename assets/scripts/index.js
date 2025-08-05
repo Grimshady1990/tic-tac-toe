@@ -31,45 +31,82 @@ function Gameboard() {
     }
 
     const placeMarker = (row, column, player) => {
-        const availableCells = board
-        .map((line) => line[row].getValue());
+        board.map((line) => line[row].getValue());
 
-        if (availableCells[row][column] === "X") {
-        
-            console.log("Place marker in empty cell!");
-        }
-        else {
+        board[row][column].addMarker(player);
             
-            board[row][column].addMarker(player);
-            printBoard();
-        }
+        
         
     }
     
     return {
         printBoard,
-        placeMarker
+        placeMarker,
+        getBoard
     }
 }
 
-const game = Gameboard();
-game.placeMarker(0, 0, "X");
+function GameController(
+    playerOne = "Fizzy",
+    playerTwo = "DooDaa"
+) {
+    
+    const board = Gameboard();
 
-game.placeMarker(0, 0, "O");
+    const player = [
+        {
+            name: playerOne,
+            marker: "X",
+        },
+        {
+            name: playerTwo,
+            marker:"O",
+        }
 
-game.placeMarker(0, 1, "O");
+    ];
 
-game.placeMarker(0, 2, "X");
+    let activePlayer = player[0]
 
-game.placeMarker(1, 0, "O");
+    const switchPlayer = () => {
+        activePlayer = activePlayer === player[0] ?
+        player[1] : player[0];
+    }
 
-game.placeMarker(1, 1, "X");
+    const getActivePlayer = () => activePlayer;
+    
+    const printNewRound = () => {
+        board.printBoard();
+        console.log(`It's ${getActivePlayer().name}'s turn`);
+    }
+    
+    const playRound = (row, column) => {
 
-game.placeMarker(1, 2, "O");
 
-game.placeMarker(2, 0, "X");
+        
 
-game.placeMarker(2, 1, "O");
+        if (printNewRound[row][column] === ("X" || "O")) {
+        
+            console.log("Place marker in empty cell!");
+        }
+        else {
 
-game.placeMarker(2, 2, "X");
+        console.log(`${getActivePlayer().name} dropped a ${getActivePlayer().marker} into row ${row} column ${column}!`);
+        board.placeMarker(row, column, getActivePlayer().marker);
+        switchPlayer();
+        printNewRound();
+        }
+    }
 
+    printNewRound();
+
+    return {
+       playRound,
+       getActivePlayer, 
+    }
+
+}
+
+const game = GameController();
+
+game.playRound(1, 1);
+game.playRound(1, 1);
