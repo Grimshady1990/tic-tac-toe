@@ -31,18 +31,22 @@ function Gameboard() {
     }
 
     const placeMarker = (row, column, player) => {
-        board.map((line) => line[row].getValue());
 
+        if (board[row][column].getValue() !== " ") {
+            console.log("ERrrror");
+            return;
+        }
+        
         board[row][column].addMarker(player);
-            
+        
+        
         
         
     }
     
     return {
         printBoard,
-        placeMarker,
-        getBoard
+        placeMarker
     }
 }
 
@@ -50,9 +54,7 @@ function GameController(
     playerOne = "Fizzy",
     playerTwo = "DooDaa"
 ) {
-    
     const board = Gameboard();
-
     const player = [
         {
             name: playerOne,
@@ -60,53 +62,64 @@ function GameController(
         },
         {
             name: playerTwo,
-            marker:"O",
-        }
-
+            marker: "O"
+        },
     ];
 
     let activePlayer = player[0]
 
-    const switchPlayer = () => {
+    const switchPlayerTurn = () => {
         activePlayer = activePlayer === player[0] ?
-        player[1] : player[0];
-    }
+        player[1] : player[0]; 
+    };
 
     const getActivePlayer = () => activePlayer;
-    
-    const printNewRound = () => {
+
+    const printNewBoard = () => {
         board.printBoard();
-        console.log(`It's ${getActivePlayer().name}'s turn`);
+        console.log(`${getActivePlayer().name}'s turn`)
     }
-    
+
     const playRound = (row, column) => {
-
-
         
-
-        if (printNewRound[row][column] === ("X" || "O")) {
-        
-            console.log("Place marker in empty cell!");
-        }
-        else {
-
-        console.log(`${getActivePlayer().name} dropped a ${getActivePlayer().marker} into row ${row} column ${column}!`);
+        console.log(`${getActivePlayer().name} just placed a marker`);
         board.placeMarker(row, column, getActivePlayer().marker);
-        switchPlayer();
-        printNewRound();
-        }
+
+        switchPlayerTurn();
+        printNewBoard();
+
     }
+    printNewBoard();
 
-    printNewRound();
-
-    return {
-       playRound,
-       getActivePlayer, 
+    return{
+        playRound
     }
-
 }
 
 const game = GameController();
+game.playRound(0, 0);
+game.playRound(0, 0)
 
-game.playRound(1, 1);
-game.playRound(1, 1);
+// const game = Gameboard();
+// game.placeMarker(0, 0, "X");
+
+// game.placeMarker(0, 0, "O");
+
+// game.placeMarker(0, 1, "O");
+
+// game.placeMarker(0, 1, "X");
+
+// game.placeMarker(0, 2, "X");
+
+// game.placeMarker(1, 0, "O");
+
+// game.placeMarker(1, 1, "X");
+
+// game.placeMarker(1, 1, "O");
+
+// game.placeMarker(2, 0, "X");
+
+// game.placeMarker(2, 0, "O");
+
+// game.placeMarker(2, 2, "X");
+
