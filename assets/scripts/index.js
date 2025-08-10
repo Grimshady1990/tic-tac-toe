@@ -30,23 +30,39 @@ function Gameboard() {
         console.log(boardWithValues);
     }
 
+    let errorCatcher = false;
+
     const placeMarker = (row, column, player) => {
 
         if (board[row][column].getValue() !== " ") {
-            console.log("ERrrror");
+            
+            errorCatcher = true;
             return;
-        }
+        } else {
+
+        errorCatcher = false;
+
+
         
         board[row][column].addMarker(player);
+        }
+
+        
+        
         
         
         
         
     }
+
+    const errorCatcherFun = () => errorCatcher;
     
     return {
         printBoard,
-        placeMarker
+        placeMarker,
+        getBoard,
+        errorCatcherFun
+        
     }
 }
 
@@ -81,14 +97,28 @@ function GameController(
     }
 
     const playRound = (row, column) => {
+
         
+        board.placeMarker(row, column, getActivePlayer().marker); 
+        
+        if(board.errorCatcherFun() === true) { 
+            console.log(`${getActivePlayer().name}, this space is taken. Try Again!`);
+            return;
+        }
+
         console.log(`${getActivePlayer().name} just placed a marker`);
-        board.placeMarker(row, column, getActivePlayer().marker);
+
+        
+
+        
+       
+        
 
         switchPlayerTurn();
         printNewBoard();
 
     }
+    console.log("Game On!!")
     printNewBoard();
 
     return{
@@ -98,7 +128,10 @@ function GameController(
 
 const game = GameController();
 game.playRound(0, 0);
-game.playRound(0, 0)
+game.playRound(0, 0);
+game.playRound(0, 1);
+game.playRound(0, 1);
+game.playRound(1, 0);
 
 // const game = Gameboard();
 // game.placeMarker(0, 0, "X");
