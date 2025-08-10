@@ -1,5 +1,5 @@
 function Cell() {
-  let value = " ";
+  let value = "-";
   const getValue = () => value;
   const addMarker = (player) => {
     value = player;
@@ -35,7 +35,7 @@ function Gameboard() {
   let errorCatcher = false;
 
   const placeMarker = (row, column, player) => {
-    if (board[row][column].getValue() !== " ") {
+    if (board[row][column].getValue() !== "-") {
       errorCatcher = true;
       return;
     } else {
