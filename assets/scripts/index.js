@@ -32,7 +32,17 @@ function Gameboard() {
     console.log(boardWithValues);
   };
 
+  const noPrintBoard = () => {
+    const boardWithValues = board.map((row) =>
+      row.map((cell) => cell.getValue()),
+    );
+
+    return boardWithValues;
+
+  };
+
   let errorCatcher = false;
+  let errorCatcher2 = false;
 
   const placeMarker = (row, column, player) => {
     if (board[row][column].getValue() !== "-") {
@@ -45,22 +55,46 @@ function Gameboard() {
     }
   };
 
+  const boardReset = () => {
+    board.map((row) =>
+      row.map((cell) => cell.addMarker("-")),
+    );
+    board.map((row) =>
+      row.map((cell) => cell.getValue()),
+    );
+    
+
+    
+  }
+
   
   const roundWinner = (player, marker) => {
 
+    const matchingCells1 = board.filter((row) => row[1].getValue() === marker).map(row => row[1]);
     
     
     if (
-      board[0][0].getValue() && board[0][1].getValue() && board[0][2].getValue() === marker
+       matchingCells1 === marker
+       
     ) {
-      console.log(`${player} Wins The Round!`);
-    }
 
-    return;
+      errorCatcher2 = true;
+      console.log(`${player} Wins The Round!`);
+      
+      return;
+      
+      
+      
+    } else 
+      errorCatcher2 = false;
+      console.log(board[1][0, 1, 2].getValue());
+      console.log(matchingCells1);
+      return;
 
   } 
 
   const errorCatcherFun = () => errorCatcher;
+  const errorCatcherFun2 = () => errorCatcher2;
 
   return {
     printBoard,
@@ -68,6 +102,9 @@ function Gameboard() {
     getBoard,
     errorCatcherFun,
     roundWinner,
+    boardReset,
+    noPrintBoard,
+    errorCatcherFun2
   };
 }
 
@@ -109,8 +146,18 @@ function GameController(playerOne = "Fizzy", playerTwo = "DooDaa") {
 
     board.roundWinner(getActivePlayer().name, getActivePlayer().marker);
 
+    if (board.errorCatcherFun2() === true) {
+      board.printBoard();
+      board.boardReset();
+      board.noPrintBoard();
+      GameController();
+      return;
+      
+    }
+
     switchPlayerTurn();
     printNewBoard();
+    console.log(board.errorCatcherFun());
     
   };
 
@@ -124,11 +171,11 @@ function GameController(playerOne = "Fizzy", playerTwo = "DooDaa") {
 }
 
 const game = GameController();
-game.playRound(0, 0);
-game.playRound(0, 0);
-game.playRound(1, 0);
-game.playRound(0, 1);
 game.playRound(1, 1);
+game.playRound(2, 0);
+game.playRound(1, 0);
+game.playRound(2, 1);
+game.playRound(1, 2);
 game.playRound(0, 2);
 
 
