@@ -45,6 +45,21 @@ function Gameboard() {
     }
   };
 
+  
+  const roundWinner = (player, marker) => {
+
+    
+    
+    if (
+      board[0][0].getValue() && board[0][1].getValue() && board[0][2].getValue() === marker
+    ) {
+      console.log(`${player} Wins The Round!`);
+    }
+
+    return;
+
+  } 
+
   const errorCatcherFun = () => errorCatcher;
 
   return {
@@ -52,6 +67,7 @@ function Gameboard() {
     placeMarker,
     getBoard,
     errorCatcherFun,
+    roundWinner,
   };
 }
 
@@ -91,50 +107,33 @@ function GameController(playerOne = "Fizzy", playerTwo = "DooDaa") {
 
     console.log(`${getActivePlayer().name} just placed a marker`);
 
+    board.roundWinner(getActivePlayer().name, getActivePlayer().marker);
+
     switchPlayerTurn();
     printNewBoard();
+    
   };
+
   console.log("Game On!!");
   printNewBoard();
 
   return {
     playRound,
+    getActivePlayer,
   };
 }
 
 const game = GameController();
 game.playRound(0, 0);
 game.playRound(0, 0);
-game.playRound(0, 1);
-game.playRound(0, 2);
 game.playRound(1, 0);
-
+game.playRound(0, 1);
 game.playRound(1, 1);
+game.playRound(0, 2);
+
+
 game.playRound(1, 2);
 game.playRound(2, 0);
 game.playRound(2, 1);
 game.playRound(2, 2);
 
-console.log("test2");
-// const game = Gameboard();
-// game.placeMarker(0, 0, "X");
-
-// game.placeMarker(0, 0, "O");
-
-// game.placeMarker(0, 1, "O");
-
-// game.placeMarker(0, 1, "X");
-
-// game.placeMarker(0, 2, "X");
-
-// game.placeMarker(1, 0, "O");
-
-// game.placeMarker(1, 1, "X");
-
-// game.placeMarker(1, 1, "O");
-
-// game.placeMarker(2, 0, "X");
-
-// game.placeMarker(2, 0, "O");
-
-// game.placeMarker(2, 2, "X");
