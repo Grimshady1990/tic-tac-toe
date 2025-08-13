@@ -70,11 +70,13 @@ function Gameboard() {
   
   const roundWinner = (player, marker) => {
 
-    const matchingCells1 = board.filter((row) => row[1].getValue() === marker).map(row => row[1]);
+    
     
     
     if (
-       matchingCells1 === marker
+       board[1][0].getValue() === marker && 
+       board[1][1].getValue() === marker &&
+       board[1][2].getValue() === marker 
        
     ) {
 
@@ -87,8 +89,6 @@ function Gameboard() {
       
     } else 
       errorCatcher2 = false;
-      console.log(board[1][0, 1, 2].getValue());
-      console.log(matchingCells1);
       return;
 
   } 
@@ -157,7 +157,7 @@ function GameController(playerOne = "Fizzy", playerTwo = "DooDaa") {
 
     switchPlayerTurn();
     printNewBoard();
-    console.log(board.errorCatcherFun());
+    
     
   };
 
@@ -183,4 +183,8 @@ game.playRound(1, 2);
 game.playRound(2, 0);
 game.playRound(2, 1);
 game.playRound(2, 2);
+game.playRound(1, 1);
+game.playRound(0, 0);
+game.playRound(1, 0);
+
 
