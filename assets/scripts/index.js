@@ -174,10 +174,12 @@ function GameController(playerOne = "Fizzy", playerTwo = "DooDaa") {
     {
       name: playerOne,
       marker: "X",
+      wins: 0,
     },
     {
       name: playerTwo,
       marker: "O",
+      wins: 0,
     },
   ];
 
@@ -193,6 +195,15 @@ function GameController(playerOne = "Fizzy", playerTwo = "DooDaa") {
     board.printBoard();
     console.log(`${getActivePlayer().name}'s turn`);
   };
+
+  const gameOver = () => {
+      if(player[0].wins || player[1].wins === 8){
+        console.log(`${getActivePlayer().name} has won the game!!!`);
+        player[0].wins = 0;
+        player[1].wins = 0;
+        
+      }
+    }
 
   const playRound = (row, column) => {
 
@@ -210,12 +221,18 @@ function GameController(playerOne = "Fizzy", playerTwo = "DooDaa") {
     board.roundWinner(getActivePlayer().name, getActivePlayer().marker);
 
     if (board.errorCatcherFun2() === true) {
+      getActivePlayer().wins += 1;
+      console.log(`${player[0].name}: ${player[0].wins} | ${player[1].name}: ${player[1].wins}`)
+      gameOver();
+      
       switchPlayerTurn();
       board.printBoard();
       board.boardReset();
       board.noPrintBoard();
+      
       console.log("Game On!!");
       printNewBoard();
+      
       return;
       
     }
