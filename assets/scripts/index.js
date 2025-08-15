@@ -43,6 +43,7 @@ function Gameboard() {
 
   let errorCatcher = false;
   let errorCatcher2 = false;
+  let errorCatcher3 = false;
 
   const placeMarker = (row, column, player) => {
     if (board[row][column].getValue() !== "-") {
@@ -67,6 +68,33 @@ function Gameboard() {
     
   }
 
+  const roundDraw = () => {
+    availableCells0 = board
+        .filter((row) => row[0].getValue() === "-")
+        .map((row) => row[0].getValue())
+
+    availableCells1 = board
+        .filter((row) => row[1].getValue() === "-")
+        .map((row) => row[1].getValue())
+    
+    availableCells2 = board
+        .filter((row) => row[2].getValue() === "-")
+        .map((row) => row[2].getValue())
+             
+    // console.log(availableCells0);
+    // console.log(availableCells1);
+    // console.log(availableCells2);
+
+    if(!availableCells0.length && !availableCells1.length && !availableCells2.length){
+      errorCatcher3 = true;
+      return;
+    } else{
+      errorCatcher3 = false;
+      return;
+    }
+    
+    
+  }
   
   const roundWinner = (player, marker) => {
 
@@ -114,14 +142,17 @@ function Gameboard() {
       
       
       
-    } else 
+    }
+    
+    else {
       errorCatcher2 = false;
       return;
-
+    }
   } 
 
   const errorCatcherFun = () => errorCatcher;
   const errorCatcherFun2 = () => errorCatcher2;
+  const errorCatcherFun3 = () => errorCatcher3;
 
   return {
     printBoard,
@@ -131,7 +162,9 @@ function Gameboard() {
     roundWinner,
     boardReset,
     noPrintBoard,
-    errorCatcherFun2
+    errorCatcherFun2,
+    roundDraw,
+    errorCatcherFun3,
   };
 }
 
@@ -162,6 +195,9 @@ function GameController(playerOne = "Fizzy", playerTwo = "DooDaa") {
   };
 
   const playRound = (row, column) => {
+
+    
+    
     board.placeMarker(row, column, getActivePlayer().marker);
 
     if (board.errorCatcherFun() === true) {
@@ -174,6 +210,7 @@ function GameController(playerOne = "Fizzy", playerTwo = "DooDaa") {
     board.roundWinner(getActivePlayer().name, getActivePlayer().marker);
 
     if (board.errorCatcherFun2() === true) {
+      switchPlayerTurn();
       board.printBoard();
       board.boardReset();
       board.noPrintBoard();
@@ -183,8 +220,24 @@ function GameController(playerOne = "Fizzy", playerTwo = "DooDaa") {
       
     }
 
+    board.roundDraw();
+
+    if (board.errorCatcherFun3() === true) {
+      console.log("It's a draw");
+      switchPlayerTurn();
+      board.printBoard();
+      board.boardReset();
+      console.log("Game On!!")
+      printNewBoard();
+  
+      return;
+    }
+
     switchPlayerTurn();
-    printNewBoard();
+      printNewBoard();
+
+    
+    
     
     
   };
@@ -199,6 +252,19 @@ function GameController(playerOne = "Fizzy", playerTwo = "DooDaa") {
 }
 
 const game = GameController();
+
+//Round 1
+console.log("Round Draw");
+game.playRound(0, 0);
+game.playRound(1, 0);
+game.playRound(0, 1);
+game.playRound(1, 1);
+game.playRound(2, 0);
+game.playRound(2, 1);
+game.playRound(2, 2);
+game.playRound(0, 2);
+game.playRound(1, 2);
+
 //Round 1
 console.log("Round 1");
 game.playRound(0, 0);
