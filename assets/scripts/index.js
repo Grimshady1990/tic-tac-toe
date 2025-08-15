@@ -74,10 +74,37 @@ function Gameboard() {
     
     
     if (
-       board[1][0].getValue() === marker && 
+       (board[1][0].getValue() === marker && 
        board[1][1].getValue() === marker &&
-       board[1][2].getValue() === marker 
+       board[1][2].getValue() === marker) ||
+      
+       (board[0][0].getValue() === marker && 
+       board[0][1].getValue() === marker &&
+       board[0][2].getValue() === marker) ||
+      
+       (board[2][0].getValue() === marker && 
+       board[2][1].getValue() === marker &&
+       board[2][2].getValue() === marker) || 
        
+       (board[0][0].getValue() === marker && 
+       board[1][0].getValue() === marker &&
+       board[2][0].getValue() === marker) ||
+
+       (board[0][1].getValue() === marker && 
+       board[1][1].getValue() === marker &&
+       board[2][1].getValue() === marker) ||
+
+       (board[0][2].getValue() === marker && 
+       board[1][2].getValue() === marker &&
+       board[2][2].getValue() === marker) ||
+
+       (board[0][0].getValue() === marker && 
+       board[1][1].getValue() === marker &&
+       board[2][2].getValue() === marker) ||
+
+       (board[0][2].getValue() === marker && 
+       board[1][1].getValue() === marker &&
+       board[2][0].getValue() === marker) 
     ) {
 
       errorCatcher2 = true;
@@ -150,7 +177,8 @@ function GameController(playerOne = "Fizzy", playerTwo = "DooDaa") {
       board.printBoard();
       board.boardReset();
       board.noPrintBoard();
-      GameController();
+      console.log("Game On!!");
+      printNewBoard();
       return;
       
     }
@@ -171,20 +199,73 @@ function GameController(playerOne = "Fizzy", playerTwo = "DooDaa") {
 }
 
 const game = GameController();
-game.playRound(1, 1);
-game.playRound(2, 0);
-game.playRound(1, 0);
-game.playRound(2, 1);
-game.playRound(1, 2);
-game.playRound(0, 2);
-
-
-game.playRound(1, 2);
-game.playRound(2, 0);
-game.playRound(2, 1);
-game.playRound(2, 2);
-game.playRound(1, 1);
+//Round 1
+console.log("Round 1");
 game.playRound(0, 0);
 game.playRound(1, 0);
+game.playRound(0, 1);
+game.playRound(1, 1);
+game.playRound(0, 2);
 
+// Round 2
+console.log("Round 2");
+game.playRound(0, 0);
+game.playRound(1, 0);
+game.playRound(2, 0);
+game.playRound(1, 1);
+game.playRound(2, 2);
+game.playRound(1, 2);
 
+// Round 3
+console.log("Round 3");
+game.playRound(0, 0);
+game.playRound(2, 0);
+game.playRound(1, 0);
+game.playRound(2, 1);
+game.playRound(0, 1);
+game.playRound(2, 2);
+
+// Round 4
+console.log("Round 4");
+game.playRound(1, 1);
+game.playRound(0, 0);
+game.playRound(2, 1);
+game.playRound(1, 0);
+game.playRound(2, 2);
+game.playRound(2, 0);
+
+// Round 5
+console.log("Round 5");
+game.playRound(0, 0);
+game.playRound(0, 1);
+game.playRound(0, 2);
+game.playRound(1, 1);
+game.playRound(2, 2);
+game.playRound(2, 1);
+
+// Round 6
+console.log("Round 6");
+game.playRound(0, 0);
+game.playRound(0, 2);
+game.playRound(1, 0);
+game.playRound(1, 2);
+game.playRound(0, 1);
+game.playRound(2, 2);
+
+// Round 7
+console.log("Round 7");
+game.playRound(2, 1);
+game.playRound(0, 0);
+game.playRound(0, 1);
+game.playRound(1, 1);
+game.playRound(2, 0);
+game.playRound(2, 2);
+
+// Round 8
+console.log("Round 8");
+game.playRound(0, 0);
+game.playRound(0, 2);
+game.playRound(1, 0);
+game.playRound(1, 1);
+game.playRound(0, 1);
+game.playRound(2, 0);
