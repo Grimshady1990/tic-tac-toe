@@ -77,21 +77,11 @@ function Gameboard() {
 
     // I could not find a way to filter all cells in one filter so as a 
     // workaround i created one for each row
-    availableCells0 = board
-      .filter((row) => row[0].getValue() === "-")
-      .map((row) => row[0].getValue())
-
-    availableCells1 = board
-      .filter((row) => row[1].getValue() === "-")
-      .map((row) => row[1].getValue())
-
-    availableCells2 = board
-      .filter((row) => row[2].getValue() === "-")
-      .map((row) => row[2].getValue())
+    const availableCells = board.flat().filter(cell => cell.getValue() === "-");
 
       // Checks if all filters have no length because this is equal to all
       // cells being filled thus triggering draw conditions 
-    if (!availableCells0.length && !availableCells1.length && !availableCells2.length) {
+    if (!availableCells.length) {
       errorCatcher3 = true;
       return;
     } else {
@@ -102,54 +92,26 @@ function Gameboard() {
 
   }
 
+  const winningCombos = [
+    [[0,0],[0,1],[0,2]],
+    [[1,0],[1,1],[1,2]],
+    [[2,0],[2,1],[2,2]],
+    [[0,0],[1,0],[2,0]],
+    [[0,1],[1,1],[2,1]],
+    [[0,2],[1,2],[2,2]],
+    [[0,0],[1,1],[2,2]],
+    [[0,2],[1,1],[2,0]],
+  ];
+
   const roundWinner = (player, marker) => {
 
-    // I am sure there is a better way to skin this cat
-    // but for now this achieves the goal of finding all
-    // winning patterns
-    // TODO: Find a less bulkier way to find win conditions
-    if (
-      (board[1][0].getValue() === marker &&
-        board[1][1].getValue() === marker &&
-        board[1][2].getValue() === marker) ||
-
-      (board[0][0].getValue() === marker &&
-        board[0][1].getValue() === marker &&
-        board[0][2].getValue() === marker) ||
-
-      (board[2][0].getValue() === marker &&
-        board[2][1].getValue() === marker &&
-        board[2][2].getValue() === marker) ||
-
-      (board[0][0].getValue() === marker &&
-        board[1][0].getValue() === marker &&
-        board[2][0].getValue() === marker) ||
-
-      (board[0][1].getValue() === marker &&
-        board[1][1].getValue() === marker &&
-        board[2][1].getValue() === marker) ||
-
-      (board[0][2].getValue() === marker &&
-        board[1][2].getValue() === marker &&
-        board[2][2].getValue() === marker) ||
-
-      (board[0][0].getValue() === marker &&
-        board[1][1].getValue() === marker &&
-        board[2][2].getValue() === marker) ||
-
-      (board[0][2].getValue() === marker &&
-        board[1][1].getValue() === marker &&
-        board[2][0].getValue() === marker)
-    ) {
-
-      // Triggers win conditions in playRound
-      errorCatcher2 = true;
-      console.log(`${player} Wins The Round!`);
-      return;
-    } else {
-        errorCatcher2 = false;
-        return;
-      }
+    errorCatcher2 = winningCombos.some(combo =>
+      combo.every(([r,c]) => board[r][c].getValue() === marker)
+    );
+    if (errorCatcher2){
+      console.log(`${player} Wins The Round Bosh!`);
+    }
+    
   }
 
 
@@ -198,7 +160,8 @@ function GameController(playerOne = "Fizzy", playerTwo = "DooDaa") {
   };
 
   const gameOver = () => {
-    if (player[0].wins || player[1].wins === 8) {
+    if (player[0].wins === 8 || player[1].wins === 8) {
+      console.log(`${player[0].name}: ${player[0].wins} | ${player[1].name}: ${player[1].wins}`)
       console.log(`${getActivePlayer().name} has won the game!!!`);
       player[0].wins = 0;
       player[1].wins = 0;
@@ -273,7 +236,17 @@ function GameController(playerOne = "Fizzy", playerTwo = "DooDaa") {
 
 const game = GameController();
 
+
+
 //Round 1
+console.log("Round 1");
+game.playRound(0, 0);
+game.playRound(1, 0);
+game.playRound(0, 1);
+game.playRound(1, 1);
+game.playRound(0, 2);
+
+//Round Draw
 console.log("Round Draw");
 game.playRound(0, 0);
 game.playRound(1, 0);
@@ -285,14 +258,6 @@ game.playRound(2, 1);
 game.playRound(2, 2);
 game.playRound(0, 2);
 game.playRound(1, 2);
-
-//Round 1
-console.log("Round 1");
-game.playRound(0, 0);
-game.playRound(1, 0);
-game.playRound(0, 1);
-game.playRound(1, 1);
-game.playRound(0, 2);
 
 // Round 2
 console.log("Round 2");
@@ -350,6 +315,15 @@ game.playRound(2, 2);
 
 // Round 8
 console.log("Round 8");
+game.playRound(0, 0);
+game.playRound(0, 2);
+game.playRound(1, 0);
+game.playRound(1, 1);
+game.playRound(0, 1);
+game.playRound(2, 0);
+
+// Round 9
+console.log("Round 9");
 game.playRound(0, 0);
 game.playRound(0, 2);
 game.playRound(1, 0);
