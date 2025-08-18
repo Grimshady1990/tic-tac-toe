@@ -46,20 +46,17 @@ function Gameboard() {
   // These "Error Catchers" were created as a way
   // to control certain conditions from the playRound 
   // function.
-  let errorCatcher1 = false; // Stops markers from being overwritten during play
-  let errorCatcher2 = false; // Ends game when a winning pattern has been achieved
-  let errorCatcher3 = false; // Ends game if all cells have been marked but no winning patterns found
-  const errorCatcherFun1 = () => errorCatcher1;
-  const errorCatcherFun2 = () => errorCatcher2;
-  const errorCatcherFun3 = () => errorCatcher3;
+  const gameConditions = {overwrite: false, win: false, draw: false};
+
+  const getGameConditions = () => ({...gameConditions});
   // *********************************************************************************
   const placeMarker = (row, column, player) => {
     // Tells playRound to trigger overwrite condition
     if (board[row][column].getValue() !== "-") {
-      errorCatcher1 = true;
+      gameConditions.win = true;
       return;
     } else {
-      errorCatcher1 = false;
+      gameConditions.win = false;
 
       board[row][column].addMarker(player);
     }
@@ -82,10 +79,10 @@ function Gameboard() {
       // Checks if all filters have no length because this is equal to all
       // cells being filled thus triggering draw conditions 
     if (!availableCells.length) {
-      errorCatcher3 = true;
+      gameConditions.draw = true;
       return;
     } else {
-      errorCatcher3 = false;
+      gameConditions.draw = false;
       return;
     }
 
@@ -105,10 +102,10 @@ function Gameboard() {
 
   const roundWinner = (player, marker) => {
 
-    errorCatcher2 = winningCombos.some(combo =>
+    gameConditions.win = winningCombos.some(combo =>
       combo.every(([r,c]) => board[r][c].getValue() === marker)
     );
-    if (errorCatcher2){
+    if (gameConditions.win){
       console.log(`${player} Wins The Round Bosh!`);
     }
     
@@ -120,12 +117,11 @@ function Gameboard() {
     printBoard,
     placeMarker,
     getBoard,
-    errorCatcherFun1,
     roundWinner,
     boardReset,
-    errorCatcherFun2,
     roundDraw,
-    errorCatcherFun3,
+    getGameConditions,
+    
   };
 }
 
@@ -174,7 +170,7 @@ function GameController(playerOne = "Fizzy", playerTwo = "DooDaa") {
     board.placeMarker(row, column, getActivePlayer().marker);
 
     // Triggers overwrite conditions
-    if (board.errorCatcherFun1() === true) {
+    if (board.getGameConditions().overwrite === true) {
       console.log(`${getActivePlayer().name}, this space is taken. Try Again!`);
       return;
     }
@@ -184,7 +180,7 @@ function GameController(playerOne = "Fizzy", playerTwo = "DooDaa") {
     board.roundWinner(getActivePlayer().name, getActivePlayer().marker);
 
     // Triggers win conditions
-    if (board.errorCatcherFun2() === true) {
+    if (board.getGameConditions().win === true) {
       getActivePlayer().wins += 1;
       gameOver();
       switchPlayerTurn();
@@ -200,7 +196,7 @@ function GameController(playerOne = "Fizzy", playerTwo = "DooDaa") {
     board.roundDraw();
 
     // Triggers draw conditions
-    if (board.errorCatcherFun3() === true) {
+    if (board.getGameConditions().draw === true) {
       console.log("It's a draw");
       switchPlayerTurn();
       board.printBoard();
@@ -322,11 +318,11 @@ game.playRound(1, 1);
 game.playRound(0, 1);
 game.playRound(2, 0);
 
-// Round 9
-console.log("Round 9");
-game.playRound(0, 0);
-game.playRound(0, 2);
-game.playRound(1, 0);
-game.playRound(1, 1);
-game.playRound(0, 1);
-game.playRound(2, 0);
+// // Round 9
+// console.log("Round 9");
+// game.playRound(0, 0);
+// game.playRound(0, 2);
+// game.playRound(1, 0);
+// game.playRound(1, 1);
+// game.playRound(0, 1);
+// game.playRound(2, 0);
